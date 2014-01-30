@@ -48,6 +48,12 @@
 
 #pragma mark Height
 
+
+- (void) updateSuperHeightConstraint: (CGFloat) offset {
+    NSLayoutConstraint *constraint = self.superHeightConstraint;
+    constraint.constant = offset;
+}
+
 - (NSLayoutConstraint *) superHeightConstraint {
     return [self superConstraintForAttribute: NSLayoutAttributeHeight];
 }
@@ -61,7 +67,55 @@
 }
 
 
+#pragma mark Center X
+
+
+- (void) updateCenterXConstraint: (CGFloat) offset {
+    NSLayoutConstraint *constraint = self.superCenterXConstraint;
+    constraint.constant = offset;
+}
+
+- (NSLayoutConstraint *) superCenterXConstraint {
+    return [self superConstraintForAttribute: NSLayoutAttributeCenterX];
+}
+
+- (NSLayoutConstraint *) superConstrainCenterX {
+    return [self superConstrainCenterX: 0];
+}
+
+- (NSLayoutConstraint *) superConstrainCenterX: (CGFloat) offset {
+    return [self superConstrainAttributeWithSelf: NSLayoutAttributeCenterX offset: offset];
+}
+
+
+#pragma mark Center Y
+
+
+- (void) updateCenterYConstraint: (CGFloat) offset {
+    NSLayoutConstraint *constraint = self.superCenterYConstraint;
+    constraint.constant = offset;
+}
+
+- (NSLayoutConstraint *) superCenterYConstraint {
+    return [self superConstraintForAttribute: NSLayoutAttributeCenterY];
+}
+
+- (NSLayoutConstraint *) superConstrainCenterY {
+    return [self superConstrainCenterY: 0];
+}
+
+- (NSLayoutConstraint *) superConstrainCenterY: (CGFloat) offset {
+    return [self superConstrainAttributeWithSelf: NSLayoutAttributeCenterY offset: offset];
+}
+
+
 #pragma mark Leading
+
+- (void) updateSuperLeadingConstraint: (CGFloat) offset {
+    NSLayoutConstraint *constraint = self.superLeadingConstraint;
+    constraint.constant = offset;
+}
+
 
 - (NSLayoutConstraint *) superLeadingConstraint {
     return [self superConstraintForAttribute: NSLayoutAttributeLeading];
@@ -91,6 +145,14 @@
 
 #pragma mark Trailing
 
+
+
+- (void) updateSuperTrailingConstraint: (CGFloat) offset {
+    NSLayoutConstraint *constraint = self.superTrailingConstraint;
+    constraint.constant = offset;
+}
+
+
 - (NSLayoutConstraint *) superTrailingConstraint {
     return [self superConstraintForAttribute: NSLayoutAttributeTrailing];
 }
@@ -105,6 +167,13 @@
 
 
 #pragma mark Top
+
+
+
+- (void) updateSuperTopConstraint: (CGFloat) offset {
+    NSLayoutConstraint *constraint = self.superTopConstraint;
+    constraint.constant = offset;
+}
 
 - (NSLayoutConstraint *) superTopConstraint {
     return [self superConstraintForAttribute: NSLayoutAttributeTop];
@@ -132,6 +201,12 @@
 
 #pragma mark Bottom
 
+
+- (void) updateSuperBottomConstraint: (CGFloat) offset {
+    NSLayoutConstraint *constraint = self.superBottomConstraint;
+    constraint.constant = offset;
+}
+
 - (NSLayoutConstraint *) superBottomConstraint {
     return [self superConstraintForAttribute: NSLayoutAttributeBottom];
 }
@@ -149,6 +224,13 @@
 
 #pragma mark All
 
+
+- (void) updateSuperConstraintsWithInsets: (NSEdgeInsets) insets {
+    [self updateSuperLeadingConstraint: insets.left];
+    [self updateSuperTrailingConstraint: insets.right];
+    [self updateSuperTopConstraint: insets.top];
+    [self updateSuperBottomConstraint: insets.bottom];
+}
 
 - (NSArray *) superConstrainEdges {
     return [self superConstrainEdges: 0];
