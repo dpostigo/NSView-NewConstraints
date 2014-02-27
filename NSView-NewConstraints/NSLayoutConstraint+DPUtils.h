@@ -8,6 +8,8 @@
 @interface NSLayoutConstraint (DPUtils)
 
 + (NSArray *) replaceItem: (id) item inConstraints: (NSArray *) constraints withItem: (id) newItem;
+- (NSString *) constraintAsString;
 - (NSString *) firstAttributeAsString;
 - (NSString *) secondAttributeAsString;
+- (NSString *) relationAsString;
 @end

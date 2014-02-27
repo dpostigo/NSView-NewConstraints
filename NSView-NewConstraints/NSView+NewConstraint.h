@@ -7,6 +7,7 @@
 
 @interface NSView (NewConstraint)
 
+- (void) updateSuperWidthConstraint: (CGFloat) offset;
 - (NSLayoutConstraint *) superWidthConstraint;
 - (NSLayoutConstraint *) superConstrainWidth;
 - (NSLayoutConstraint *) superConstrainWidth: (CGFloat) offset;
@@ -20,9 +21,11 @@
 - (NSLayoutConstraint *) superCenterXConstraint;
 - (NSLayoutConstraint *) superConstrainCenterX;
 - (NSLayoutConstraint *) superConstrainCenterX: (CGFloat) offset;
+
 - (void) updateCenterYConstraint: (CGFloat) offset;
 - (NSLayoutConstraint *) superConstrainCenterY;
 - (NSLayoutConstraint *) superConstrainCenterY: (CGFloat) offset;
+
 - (void) updateSuperLeadingConstraint: (CGFloat) offset;
 - (NSLayoutConstraint *) superLeadingConstraint;
 - (NSLayoutConstraint *) superConstrainLeading;
@@ -41,7 +44,6 @@
 - (NSLayoutConstraint *) superConstrainTop: (CGFloat) offset;
 - (NSLayoutConstraint *) superConstrainTopToItem: (id) item;
 
-
 - (void) updateSuperBottomConstraint: (CGFloat) offset;
 - (NSLayoutConstraint *) superBottomConstraint;
 - (NSLayoutConstraint *) superConstrainBottom;
@@ -54,5 +56,7 @@
 - (NSArray *) superConstrainWithInsets: (NSEdgeInsets) insets;
 
 
+- (NSLayoutConstraint *) viewWidthConstraint;
+- (NSLayoutConstraint *) viewHeightConstraint;
 - (NSLayoutConstraint *) superCenterYConstraint;
 @end

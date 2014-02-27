@@ -7,7 +7,6 @@
 
 @implementation NSLayoutConstraint (DPUtils)
 
-
 - (void) sandbox {
 
 }
@@ -30,12 +29,82 @@
     return ret;
 }
 
+#pragma mark String output
+
+- (NSString *) constraintAsString {
+    NSMutableString *ret = [[NSMutableString alloc] initWithString: @"{\n"];
+
+    NSString *format = @"\t%@ = %@\n";
+    [ret appendFormat: format, @"firstItem", [NSString stringWithFormat: @"%@ - %@", self.firstItemAsString, self.firstAttributeAsString]];
+
+    if (self.secondItem && self.secondAttribute != NSLayoutAttributeNotAnAttribute) {
+        [ret appendFormat: format, @"secondItem", [NSString stringWithFormat: @"%@ - %@", self.secondItemAsString, self.secondAttributeAsString]];
+    }
+
+    [ret appendFormat: format, @"relation", self.relationAsString];
+
+    if (self.constant > 0) {
+        [ret appendFormat: format, @"constant", [NSString stringWithFormat: @"%f", self.constant]];
+    }
+
+    if (self.identifier) {
+        [ret appendFormat: format, @"identifier", self.identifier];
+    }
+    //    [ret appendFormat: @"\tsecondAttribute = %@", self.secondAttributeAsString];
+    [ret appendString: @"}"];
+    return ret;
+}
+
+
+
+#pragma mark NSLayoutAttributes
+
+
+- (NSString *) firstItemAsString {
+    NSString *ret = [NSString stringWithFormat: @"%@", self.firstItem];
+    if ([self.firstItem identifier]) {
+        ret = [self.firstItem identifier];
+    }
+    return ret;
+}
+
+
+- (NSString *) secondItemAsString {
+    NSString *ret = [NSString stringWithFormat: @"%@", self.secondItem];
+    if ([self.secondItem identifier]) {
+        ret = [self.secondItem identifier];
+    }
+    return ret;
+}
+
 - (NSString *) firstAttributeAsString {
     return [self stringForLayoutAttribute: self.firstAttribute];
 }
 
 - (NSString *) secondAttributeAsString {
     return [self stringForLayoutAttribute: self.secondAttribute];
+}
+
+
+- (NSString *) relationAsString {
+    return [self stringForLayoutRelation: self.relation];
+}
+
+#pragma mark NSLayoutAttribute as strings
+
+
+- (NSString *) stringForLayoutRelation: (NSLayoutRelation) relation {
+    NSString *ret = nil;
+    if (relation == NSLayoutRelationEqual) {
+        ret = @"NSLayoutRelationEqual";
+
+    } else if (relation == NSLayoutRelationGreaterThanOrEqual) {
+        ret = @"NSLayoutRelationGreaterThanOrEqual";
+
+    } else if (relation == NSLayoutRelationLessThanOrEqual) {
+        ret = @"NSLayoutRelationLessThanOrEqual";
+    }
+    return ret;
 }
 
 - (NSString *) stringForLayoutAttribute: (NSLayoutAttribute) attribute {

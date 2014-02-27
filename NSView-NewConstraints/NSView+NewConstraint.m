@@ -33,8 +33,18 @@
 
 #pragma mark Width
 
+
+- (void) updateSuperWidthConstraint: (CGFloat) offset {
+    NSLayoutConstraint *constraint = self.superWidthConstraint;
+    if (constraint == nil) {
+        constraint = [self superConstrainWidth: offset];
+    }
+    constraint.constant = offset;
+}
+
+
 - (NSLayoutConstraint *) superWidthConstraint {
-    return [self superConstraintForAttribute: NSLayoutAttributeWidth];
+    return [self superReversedConstraintForAttribute: NSLayoutAttributeWidth];
 }
 
 - (NSLayoutConstraint *) superConstrainWidth {
@@ -55,7 +65,7 @@
 }
 
 - (NSLayoutConstraint *) superHeightConstraint {
-    return [self superConstraintForAttribute: NSLayoutAttributeHeight];
+    return [self superReversedConstraintForAttribute: NSLayoutAttributeHeight];
 }
 
 - (NSLayoutConstraint *) superConstrainHeight {
@@ -76,7 +86,7 @@
 }
 
 - (NSLayoutConstraint *) superCenterXConstraint {
-    return [self superConstraintForAttribute: NSLayoutAttributeCenterX];
+    return [self superReversedConstraintForAttribute: NSLayoutAttributeCenterX];
 }
 
 - (NSLayoutConstraint *) superConstrainCenterX {
@@ -97,7 +107,7 @@
 }
 
 - (NSLayoutConstraint *) superCenterYConstraint {
-    return [self superConstraintForAttribute: NSLayoutAttributeCenterY];
+    return [self superReversedConstraintForAttribute: NSLayoutAttributeCenterY];
 }
 
 - (NSLayoutConstraint *) superConstrainCenterY {
@@ -113,12 +123,19 @@
 
 - (void) updateSuperLeadingConstraint: (CGFloat) offset {
     NSLayoutConstraint *constraint = self.superLeadingConstraint;
+    if (constraint == nil) {
+        constraint = [self superConstrainLeading: offset];
+    }
     constraint.constant = offset;
 }
 
 
 - (NSLayoutConstraint *) superLeadingConstraint {
-    return [self superConstraintForAttribute: NSLayoutAttributeLeading];
+    NSLayoutConstraint *ret = [self superReversedConstraintForAttribute: NSLayoutAttributeLeading];
+    if (ret == nil) {
+        ret = [self superConstraintForAttribute: NSLayoutAttributeLeading];
+    }
+    return ret;
 }
 
 - (NSLayoutConstraint *) superConstrainLeading {
@@ -149,12 +166,19 @@
 
 - (void) updateSuperTrailingConstraint: (CGFloat) offset {
     NSLayoutConstraint *constraint = self.superTrailingConstraint;
+    if (constraint == nil) {
+        constraint = [self superConstrainTrailing: offset];
+    }
     constraint.constant = offset;
 }
 
 
 - (NSLayoutConstraint *) superTrailingConstraint {
-    return [self superConstraintForAttribute: NSLayoutAttributeTrailing];
+    NSLayoutConstraint *ret = [self superReversedConstraintForAttribute: NSLayoutAttributeTrailing];
+    if (ret == nil) {
+        ret = [self superConstraintForAttribute: NSLayoutAttributeTrailing];
+    }
+    return ret;
 }
 
 - (NSLayoutConstraint *) superConstrainTrailing {
@@ -172,6 +196,9 @@
 
 - (void) updateSuperTopConstraint: (CGFloat) offset {
     NSLayoutConstraint *constraint = self.superTopConstraint;
+    if (constraint == nil) {
+        constraint = [self superConstrainTop: offset];
+    }
     constraint.constant = offset;
 }
 
@@ -184,7 +211,7 @@
 }
 
 - (NSLayoutConstraint *) superConstrainTop {
-    return [self superConstrainLeading: 0];
+    return [self superConstrainTop: 0];
 }
 
 #pragma mark Top, item
@@ -204,11 +231,14 @@
 
 - (void) updateSuperBottomConstraint: (CGFloat) offset {
     NSLayoutConstraint *constraint = self.superBottomConstraint;
+    if (constraint == nil) {
+        constraint = [self superConstrainBottom: offset];
+    }
     constraint.constant = offset;
 }
 
 - (NSLayoutConstraint *) superBottomConstraint {
-    return [self superConstraintForAttribute: NSLayoutAttributeBottom];
+    return [self superReversedConstraintForAttribute: NSLayoutAttributeBottom];
 }
 
 
@@ -277,7 +307,52 @@
             }
 
         }
+    }
+    return ret;
+}
 
+- (NSLayoutConstraint *) superReversedConstraintForAttribute: (NSLayoutAttribute) attribute {
+    NSLayoutConstraint *ret = nil;
+    if (self.superview) {
+
+        NSArray *constraints = [NSArray arrayWithArray: self.superview.constraints];
+        for (NSLayoutConstraint *constraint in constraints) {
+            if (constraint.firstItem == self.superview && constraint.secondItem == self
+                    && constraint.firstAttribute == attribute && constraint.secondAttribute == attribute) {
+                ret = constraint;
+                break;
+            }
+
+        }
+    }
+    return ret;
+}
+
+
+
+#pragma mark More constraints
+
+
+- (NSLayoutConstraint *) viewWidthConstraint {
+    return [self viewConstraint: NSLayoutAttributeWidth];
+}
+
+- (NSLayoutConstraint *) viewHeightConstraint {
+    return [self viewConstraint: NSLayoutAttributeHeight];
+}
+
+- (NSLayoutConstraint *) viewConstraint: (NSLayoutAttribute) attribute {
+    NSLayoutConstraint *ret = nil;
+
+    NSArray *constraints = [NSArray arrayWithArray: self.constraints];
+    for (NSLayoutConstraint *constraint in constraints) {
+        if (constraint.firstItem == self &&
+                constraint.secondItem == nil  &&
+                constraint.firstAttribute == attribute &&
+                constraint.secondAttribute == NSLayoutAttributeNotAnAttribute) {
+            ret = constraint;
+            break;
+        }
     }
     return ret;
 }

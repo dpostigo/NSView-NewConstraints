@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "NSView-NewConstraints"
-  s.version      = "0.0.3"
+  s.version      = "0.0.4"
   s.summary      = "Constraint helpers."
   s.homepage     = "http://dpostigo.com"
   s.license      = 'BSD'
